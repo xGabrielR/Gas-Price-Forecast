@@ -84,9 +84,11 @@ List to Validate:
 **Number: 2. The total price of gas increase more than 10% in last two quarters on year.** is False based on Plots, you can see looks like the same behavior on different quarters, but quarter 2 and 3 looks like a very small difference, is i like to use a *statistical inference test of means* for validate the hypothesis, I will need to validade in all regions individually and split the gas on control and validate groups, is very hard to do in real life. 
 
 Total Price by Quarter
+
 <img src="imgs/quarter_gas_prices.png">
 
 Quarter Price Means
+
 <img src="imgs/quarter_price_mean.png">
 
 **Number: 3. The region Ohio have gas price 2x more expensive than other regions.** is False based on Plots, but is possible to see, the best region for buy gas is Ohio, the price is the small of all regions, but i need to have a better analisys of this hypothesis, for example compare different periods and check if this price is small in all months, for example, in Statistical Description, the small price observed in dataset is for region "midwest", but, the std is higher, I made below a simple stats table for checkout this two states.
