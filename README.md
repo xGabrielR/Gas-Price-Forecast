@@ -16,7 +16,8 @@
 - [3.0. Exploratory Data Analysis](#30-exploratory-data-analysis)
   - [3.1. Top 2 Hypothesis](#31-top-2-hypothesis)
 - [4.0. Machine Learning](#40-machine-learning)
-- [5.0. Next Steps](#50-next-steps)
+- [5.0. Serving](#50-serving)
+- [6.0. Next Steps](#60-next-steps)
 
 ---
 
@@ -121,8 +122,54 @@ For simple Cross Validation, is possible to see with more data, better results.
 
 <img src="imgs/cross_val.png">
 
+## 5.0. Serving
 
-## 5.0. Next Steps
+---
+
+For the serving layer of this project i used terraform for build a aws glue database with a delta crawler in s3, after that, the crawler stores the metadata in database, finally i query this results with aws athena, is very simple to deploy with terraform and "by hand", before i have shared a simple tutorial to setup athena with delta lake in aws, i will save the steps again below here:
+
+For Aws you can create Delta Connection by hand using aws marketplace: 
+
+1. Create Marketplace Delta Lake connection and Configure with default options for connector and you need to provide a VPC, Subnets and SG, can be used default or created with TF.
+2. Create Database on AWS Glue for Store Crawler Metadata.
+3. Create a Crawler to analyse Delta Tables (Provide Path of All Tables!).
+4. The Crawler will save the schema and metadata of the Delta Table on AWS Glue Database (created on 3.).
+5. Query on Athena!!!
+
+I selected Athena, because have some cool components and features, I can connect JDBC, Metabase, PowerBI and Tableau, and have key features such as:
+
+- Aws serverless optimized Presto;
+- Support for rich SQL clauses for ad-hoc queries;
+- No ETL required;
+- Pay only for data Scanned;
+- Highly available;
+- Analyze data from S3;
+- Decouple Storage from compute;
+- Integration with Glue and Glue databases;
+- Possible to Query ORC, Parquet and lakehouse metadata such as iceberg, delta and Hudi.
+
+```sql
+
+WITH trnfrm AS (
+    SELECT 
+        DATE as COLLECT_DATE,
+        US as US,
+        OHIO as OHIO
+    FROM grc-test-database
+)
+SELECT 
+    *
+FROM trnfrm
+ORDER BY COLLECT_DATE DESC
+
+```
+
+In athena query editor:
+
+<img src="imgs/athena.png">
+
+
+## 6.0. Next Steps
 
 ---
 
