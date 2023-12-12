@@ -117,13 +117,16 @@ For tuning, i only selected one feature, is the "seasonal length", maybe this pa
 
 <img src="imgs/mlflow_best_runs.png">
 
+For simple Cross Validation, is possible to see with more data, better results.
+
+<img src="imgs/cross_val.png">
+
 
 ## 5.0. Next Steps
 
 ---
 
-1. Time Series Cross Val, is important!
-2. Test Exog Features.
-3. Explore more the validated hypothesis.
-4. Fix and validate new terraform deployments.
-5. Test external features (build bronze, silver and gold workflows and test on inference).
+1. Test Exog Features.
+2. Explore more the validated hypothesis.
+3. Fix and validate new terraform deployments.
+4. Test external features (build bronze, silver and gold workflows and test on inference).
