@@ -155,7 +155,7 @@ WITH trnfrm AS (
         DATE as KEY_DATE,
         US as US,
         OHIO as OHIO
-    FROM grc-test-database.gas_complete_forecast
+    FROM "grc-test-database".gas_complete_forecast
 )
 SELECT 
     *
