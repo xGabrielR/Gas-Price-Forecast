@@ -152,7 +152,7 @@ I selected Athena, because have some cool components and features, I can connect
 
 WITH trnfrm AS (
     SELECT 
-        DATE as COLLECT_DATE,
+        DATE as KEY_DATE,
         US as US,
         OHIO as OHIO
     FROM grc-test-database
