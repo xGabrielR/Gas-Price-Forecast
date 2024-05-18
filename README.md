@@ -69,9 +69,21 @@ For machine learning step, is all inside two notebooks, the EDA notebook and For
 
 ---
 
-This is a very cool step in data science projects or in CRISP cycle, I divide the EDA into three steps, univariable, bivariable and multivariable steps, In the univariable I check the target and all the characteristics (categorical and numerical) if exists, In the Bivariable, this step I validate Business Hypothesis and check seasonal plots, finally in the Multivariable it is the correlations (linear only) and the pair diagrams for check behaviors of all features.
+This is a very cool step in data science projects or in CRISP cycle, I divide the EDA into three steps, univariable, bivariable and multivariable steps, In the univariable I check the target and all the characteristics (categorical and numerical) if exists, In the Bivariable, this step I validate Business Hypothesis and check seasonal plots, finally in the Multivariable it is the correlations (linear only) and the pair diagrams for check behaviors of all feature engineering features.
+
+The first and most basic graph is the time graph, the time series is a random variable sampled from a forecast distribution at time "t" over several times. In this scenario, every week I sample a new gas price from a forecast distribution at time "t" of "gas price distirbution". The time series is a sample at time "t" of this process, forecasting methods try to find this process for prediction. In summary, the time series is one of the multiple trajectories that the random variable can have.
+
+The main goals of time series is:
+
+1. Understanding and investigating the time series generation mechanism, we need to know how gas price is generated for better business decisions.
+2. Make future forecasting.
+3. Describe time series patterns.
+
+and much more.
 
 <img src="imgs/time_plots.png">
+
+In charge to investigate the mechanism that if generated the series, i created simple 5 questions to answer with data. 
 
 List to Validate:
 
@@ -85,7 +97,7 @@ List to Validate:
 
 ---
 
-**Number: 2. The total price of gas increase more than 10% in last two quarters on year.** is False based on Plots, you can see looks like the same behavior on different quarters, but quarter 2 and 3 looks like a very small difference, is i like to use a *statistical inference test of means* for validate the hypothesis, I will need to validade in all regions individually and split the gas on control and validate groups, is very hard to do in real life. 
+**Number: 2. The total price of gas increase more than 10% in last two quarters on year.** is False based on Plots, you can see looks like the same behavior on different quarters, but quarter 2 and 3 looks like a very small difference. A good tool for check that is to use *statistical inference test of means* for validate the hypothesis, I will need to validade in all regions individually and split the gas price in each region on "control" and "validate" individual groups, is very hard to do in real life, but i can assume based only on plots this is a false hypothesis. 
 
 Total Price by Quarter
 
@@ -95,7 +107,7 @@ Quarter Price Means
 
 <img src="imgs/quarter_price_mean.png">
 
-**Number: 3. The region Ohio have gas price 2x more expensive than other regions.** is False based on Plots, but is possible to see, the best region for buy gas is Ohio, the price is the small of all regions, but i need to have a better analisys of this hypothesis, for example compare different periods and check if this price is small in all months, for example, in Statistical Description, the small price observed in dataset is for region "midwest", but, the std is higher, I made below a simple stats table for checkout this two states.
+**Number: 3. The region Ohio have gas price 2x more expensive than other regions.** is False based on Plots, but is possible to see, the best region for buy gas is Ohio, the price is the small of all regions, but i need to have a better analisys of this hypothesis, for example compare different periods and check if this price is small in all months, for example, in Statistical Description, the small price observed in dataset is for region "midwest", but, the std is higher, I made below a simple stats table for checkout this two regions, is a cents of difference.
 
 | region      | std  | min  | 25%  | 50%  | 75%  | max  |
 | ----------- | ---- | ---- | ---- | ---- | ---- | ---- |
@@ -104,11 +116,11 @@ Quarter Price Means
 
 <img src="imgs/gas_price_by_state.png">
 
-You can check on this simple map, every region has on price limit for gas price.
+I can find more patterns with that on this simple map, every region has on price limit for gas price, but some regions have a high price, its very natural, the price changes in lat long.
 
 <img src="imgs/scatter_map.png">
 
-Is very cool to check that, every region has your price of gas based on a lot of features that i need to use for understand the time series generating process for better and accurate forecasting.
+It's really cool to check this distribution based on regions, each region has its gas price based on different features that I need to use to understand the process of generating to this time series for better and more accurate forecasts. You can see the upper and lower price ranges for the last 4 years in the plot below. There are regions with high prices and regions with very low prices, and the tendency is for prices to increase Yer over Year (YoY).
 
 <img src="imgs/time_plots_bands.png">
 
@@ -116,11 +128,26 @@ Is very cool to check that, every region has your price of gas based on a lot of
 
 ---
 
+Before Machine Learning i created a lot of features such as lag, exponentially, trend-component, lat, long and preprocessing and a prequential sliding window for cross validation, mode details at notebook.
+
 For forecast, i used nixtla for multiple regions gas forecast, the best statistical method fitted is CES based on train and test, but is very danger to use train test in time series because the best model fit on train but for last fit (fit estimator using train and test for future forecast) the estimator cannot be the "best" given more variations introduced on dataset, I not used time series cross validation because its all builted in first cycle for this solution, in next cycles i will use other models such xgboost, and other statistical methods and make a cross valiadion for really find the best inference model, is the next steps!
 
 But is possible to see a good seasonal behavior on sliced dataset with peaks closer to month 11, maybe a exog cyclic feature can do a better fit instead using only price variations, but i not used exog features in the first cycle, only for simple tests.
 
-The Mlflow is the tool used for log, monitore and register models for inference on gold layer, i log results for baseline models such as mean and seasonal naive, and log metrics for statsforecast estimators too.
+The better classical method for future forecasting for this time series that i get is the MSTL. I like MSTL, is a good starting for first business value to give to business.
+The MSTL model (Multiple Seasonal-Trend decomposition using LOESS) is a method used to decompose a time series into its seasonal, trend and residual components. This approach is based on the use of LOESS (Local Regression Smoothing) to estimate the components of the time series.
+
+The MSTL decomposition is an extension of the classic seasonal-trend decomposition method (also known as Holt-Winters decomposition), which is designed to handle situations where multiple seasonal patterns exist in the data. This can occur, for example, when a time series exhibits daily, weekly, and yearly patterns simultaneously.
+
+Traditionally, STL is the best decomposition model for time series in classic methods (https://otexts.com/fpp2/stl.html), MSTL use STL to decompose and forecasting, but i need to forecast the components of the series, maybe can be very hard too (https://otexts.com/fpp2/complexseasonality.html).
+
+On line plot below you can see that future forecasting, the MSTL have a realistic forecasting.
+
+<img src="imgs/mstl_forecasting.png">
+
+<img src="imgs/train_test_mstl_metrics.png">
+
+The Mlflow is the tool used for log, monitore and register models for inference on gold layer, i log results for baseline models such as mean and seasonal naive, and log metrics for statsforecast estimators and sklearn too, all in databricks mlflow experimen.
 
 <img src="imgs/mlflow_runs.png">
 
@@ -131,6 +158,10 @@ For tuning, i only selected one feature, is the "seasonal length", maybe this pa
 For simple Cross Validation, is possible to see with more data, better results.
 
 <img src="imgs/cross_val.png">
+
+I working with XGBoost too and fine tuning with Optuna, but "tuned" xgboost do not show a very good results for future forecasting.
+
+After a lot of experiments i stacking the future forecasting of XGBoost and MSTL for future forecast the next 4 months of gas price.
 
 ## 5.0. Serving
 
