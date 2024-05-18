@@ -44,10 +44,10 @@ I have CRISP in my toolkit for rapid development of solutions and problem solvin
 
 
 ### 2.3. The Workflow
-My Databricks Notebook ML Published: https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/8344051579127702/733971477183930/5729498605416871/latest.html
 
 For this project I have developed a workflow for gas price forecast, from source to query. The data source is a US Gov available dataset from this link: "https://www.eia.gov/petroleum/gasdiesel". I have takend this source and make a process for monthly extraction and save on landing object in Aws s3.
-After the file is in landing, i used delta lake to build a lakehouse multi-hop architecture, all using databricks with spark and aws s3 for delta files and athena for query in delta files inside a data lakehouse, from databricks I used a ML Cluster for machine learning, mlflow, nixtla and spark with all delta jars, and with aws i have selected terraform for IAC tool for fast build all buckets, glue crawler and database for athena serving layer, all is visible on this image below:
+
+After the file is in landing, i used delta lake to build a lakehouse multi-hop architecture, all ingestion notebooks and pipeline using databricks with spark and aws s3 for delta files, for serving and query layer i choosed athena for query in delta files inside a data lakehouse. From databricks I used a ML Cluster for machine learning, mlflow, nixtla and spark with all delta jars, and with aws, i have selected terraform for IAC tool for fast build all buckets, glue crawler and database for athena serving layer, all is visible on this image below:
 
 <img src="imgs/workflow.png">
 
@@ -63,12 +63,15 @@ For Aws you can create Delta Connection by hand using aws marketplace:
 4. The Crawler will save the schema and metadata of the Delta Table on AWS Glue Database (created on 3.).
 5. Query on Athena!!!
 
+For machine learning step, is all inside two notebooks, the EDA notebook and Forecasting notebook, the main ideia is document every step and build end to end EDA and Ml workflows.
 
 ## 3.0. Exploratory Data Analysis
 
 ---
 
-This is a very cool step in data science projects, I divide the EDA into three steps, univariable, bivariable and multivariable steps, In the univariable I check the target and all the characteristics (categorical and numerical) if exists, In the Bivariable, this step I validate Business Hypothesis and check seasonal plots, finally in the Multivariable it is the correlations and the pair diagrams for check behaviors of all features.
+This is a very cool step in data science projects or in CRISP cycle, I divide the EDA into three steps, univariable, bivariable and multivariable steps, In the univariable I check the target and all the characteristics (categorical and numerical) if exists, In the Bivariable, this step I validate Business Hypothesis and check seasonal plots, finally in the Multivariable it is the correlations (linear only) and the pair diagrams for check behaviors of all features.
+
+<img src="imgs/time_plots.png">
 
 List to Validate:
 
@@ -101,6 +104,13 @@ Quarter Price Means
 
 <img src="imgs/gas_price_by_state.png">
 
+You can check on this simple map, every region has on price limit for gas price.
+
+<img src="imgs/scatter_map.png">
+
+Is very cool to check that, every region has your price of gas based on a lot of features that i need to use for understand the time series generating process for better and accurate forecasting.
+
+<img src="imgs/time_plots_bands.png">
 
 ## 4.0. Machine Learning
 
