@@ -143,6 +143,7 @@ Traditionally, STL is the best decomposition model for time series in classic me
 
 On line plot below you can see that future forecasting, the MSTL have a realistic forecasting.
 
+<img src="imgs/mstl_forecasting.png">
 
 <img src="imgs/train_test_mstl_metrics.png">
 
